@@ -737,7 +737,7 @@ vim.opt.clipboard = 'unnamedplus'
 
 --colorscheme
 
-vim.cmd.colorscheme 'gruvbox'
+vim.cmd.colorscheme 'catppuccin-frappe'
 -- Tabs and spaces
 vim.opt.number = true
 vim.opt.relativenumber = true
