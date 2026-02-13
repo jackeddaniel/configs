@@ -735,6 +735,7 @@ require("lazy").setup({
 				--  the list of additional_vim_regex_highlighting and disabled languages for indent.
 				additional_vim_regex_highlighting = { "ruby" },
 			},
+			indent = { enable = true, disable = { "ruby" } },
 		},
 	},
 }, {
@@ -746,7 +747,7 @@ require("lazy").setup({
 			ft = "📂",
 			init = "⚙",
 			keys = "🗝",
-
+			plugin = "🔌",
 			runtime = "💻",
 			require = "🌙",
 			source = "📄",
@@ -764,7 +765,7 @@ vim.opt.clipboard = "unnamedplus"
 
 --colorscheme
 
-vim.cmd.colorscheme("catppuccin-frappe")
+vim.cmd.colorscheme("tokyonight-night")
 -- Tabs and spaces
 vim.opt.number = true
 vim.opt.relativenumber = true
