@@ -5,16 +5,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
-
--- NOTE: You can change these options as you wish!
---  For more options, you can see `:help option-list`
-
--- Make line numbers default
-vim.o.number = true
--- You can also add relative line numbers, to help with jumping.
---  Experiment for yourself to see if you like it!
-vim.o.relativenumber = true
+vim.g.have_nerd_font = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = "a"
@@ -29,6 +20,21 @@ vim.o.showmode = false
 vim.schedule(function()
 	vim.o.clipboard = "unnamedplus"
 end)
+
+vim.o.background = "dark"
+
+-- Tabs and spaces
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+
+-- Windows-style keymaps
+vim.keymap.set("n", "<C-c>", '"+yy', { noremap = true, silent = true })
+vim.keymap.set("n", "<C-v>", '"+p', { noremap = true, silent = true })
+vim.keymap.set("v", "<C-c>", '"+y', { noremap = true, silent = true })
+vim.keymap.set("i", "<C-v>", "<C-r>+", { noremap = true, silent = true })
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -150,75 +156,6 @@ require("lazy").setup({
 			},
 		},
 	},
-	{
-		"ellisonleao/gruvbox.nvim",
-		name = "gruvbox",
-		priority = 1000, -- Ensures it loads before other things
-		config = function()
-			-- Optional: Set global option for True Color (recommended for modern Nvim colorschemes)
-			vim.opt.termguicolors = true
-
-			-- Optional: Setup function for gruvbox options
-			require("gruvbox").setup({
-				terminal_colors = true, -- add neovim terminal colors
-				undercurl = true,
-				underline = true,
-				bold = true,
-				italic = {
-					strings = true,
-					emphasis = true,
-					comments = true,
-					operators = false,
-					folds = true,
-				},
-				strikethrough = true,
-				invert_selection = false,
-				invert_signs = false,
-				invert_tabline = false,
-				inverse = true, -- invert the visual highlight of inverse-highlighted things
-				contrast = "soft", -- can be 'hard', 'soft' or empty for default
-				palette_overrides = {},
-				overrides = {},
-				theme = "light", -- 'dark' or 'light'
-			})
-
-			-- Set the colorscheme
-			--vim.o.background = 'light'
-			--vim.cmd.colorscheme 'gruvbox'
-		end,
-	},
-
-	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		priority = 1000,
-		config = function()
-			require("catppuccin").setup({
-				flavour = "mocha",
-				transparent_background = false,
-				integrations = {
-					treesitter = true,
-					telescope = true,
-					gitsigns = true,
-					cmp = true,
-					lsp_trouble = true,
-					whick_key = true,
-					indent_blankline = { enabled = true },
-					native_lsp = {
-						enabled = true,
-						underlines = {
-							errors = { "undercurl" },
-							hints = { "undercurl" },
-							warnings = { "undercurl" },
-							information = { "undercurl" },
-						},
-					},
-				},
-			})
-			---vim.cmd.colorscheme 'catppuccin'
-		end,
-	},
-
 	{ -- Useful plugin to show you pending keybinds.
 		"folke/which-key.nvim",
 		event = "VimEnter", -- Sets the loading event to 'VimEnter'
@@ -549,7 +486,11 @@ require("lazy").setup({
 
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
-				"stylua", -- Used to format Lua code
+				"stylua",
+				"ruff",
+				"gofumpt",
+				"prettier",
+				"clang-format",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -596,6 +537,15 @@ require("lazy").setup({
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
+				python = { "ruff_format" },
+				go = { "gofumpt" },
+				javascript = { "prettier" },
+				typescript = { "prettier" },
+				json = { "prettier" },
+				html = { "prettier" },
+				css = { "prettier" },
+				c = { "clang_format" },
+				cpp = { "clang_format" },
 			},
 		},
 	},
@@ -663,25 +613,17 @@ require("lazy").setup({
 		},
 	},
 
-	{ -- You can easily change to a different colorscheme.
-		-- Change the name of the colorscheme plugin below, and then
-		-- change the command in the config to whatever the name of that colorscheme is.
-		--
-		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+	{
 		"folke/tokyonight.nvim",
 		priority = 1000, -- Make sure to load this before all the other start plugins.
 		config = function()
-			---@diagnostic disable-next-line: missing-fields
 			require("tokyonight").setup({
 				styles = {
 					comments = { italic = false }, -- Disable italics in comments
 				},
 			})
 
-			-- Load the colorscheme here.
-			-- Like many other themes, this one has different styles, and you could load
-			-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-			--vim.cmd.colorscheme 'tokyonight-night'
+			vim.cmd.colorscheme("tokyonight-night")
 		end,
 	},
 
@@ -716,13 +658,19 @@ require("lazy").setup({
 			ensure_installed = {
 				"bash",
 				"c",
+				"cpp",
 				"diff",
+				"go",
 				"html",
+				"javascript",
+				"json",
 				"lua",
 				"luadoc",
 				"markdown",
 				"markdown_inline",
+				"python",
 				"query",
+				"typescript",
 				"vim",
 				"vimdoc",
 			},
@@ -758,23 +706,5 @@ require("lazy").setup({
 	},
 })
 
---MY MODS
-vim.o.background = "dark"
--- Enable system clipboard
-vim.opt.clipboard = "unnamedplus"
-
---colorscheme
-
-vim.cmd.colorscheme("tokyonight-night")
--- Tabs and spaces
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-
--- Windows-style keymaps
-vim.keymap.set("n", "<C-c>", '"+yy', { noremap = true, silent = true })
-vim.keymap.set("n", "<C-v>", '"+p', { noremap = true, silent = true })
-vim.keymap.set("v", "<C-c>", '"+y', { noremap = true, silent = true })
-vim.keymap.set("i", "<C-v>", "<C-r>+", { noremap = true, silent = true })
+-- NOTE: You can change these options as you wish!
+--  For more options, you can see `:help option-list`
