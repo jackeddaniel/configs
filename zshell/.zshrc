@@ -22,6 +22,14 @@ export PATH="$PATH:$(go env GOPATH)/bin"
 
 source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
 
+export EDITOR=nvim
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+export CLICOLOR=1
+export LSCOLORS=GxFxCxDxBxegedabagaced
+
+# opencode
+export PATH=/Users/siddhant/.opencode/bin:$PATH
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
